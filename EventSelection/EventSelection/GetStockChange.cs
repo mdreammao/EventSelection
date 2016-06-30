@@ -13,11 +13,14 @@ namespace EventSelection
         /// 万德接口类实例。
         /// </summary>
         static WindAPI w = new WindAPI();
-        public SortedDictionary<int, stockModifyList> changeList = new SortedDictionary<int, stockModifyList>();
+        static public SortedDictionary<int, stockModifyList> changeList = new SortedDictionary<int, stockModifyList>();
         private string indexName = "000016.SH";
         public GetStockChange()
         {
-            GetStockList();   
+            if (changeList.Count()==0)
+            {
+                GetStockList();
+            }
         }
 
         private void GetStockList()

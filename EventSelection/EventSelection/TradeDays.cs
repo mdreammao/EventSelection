@@ -66,7 +66,10 @@ namespace EventSelection
             string CSVName = "tradedays.csv";
             try
             {
-                GetDataFromCSV(CSVName);
+                if (tradeDaysOfDataBase.Count==0)
+                {
+                    GetDataFromCSV(CSVName);
+                }
             }
             catch (Exception)
             {
@@ -136,7 +139,7 @@ namespace EventSelection
                 r["tradedays"] = date;
                 tradeDaysData.Rows.Add(r);
             }
-            CsvApplication.SaveCSV(tradeDaysData, CSVName);
+            CsvApplication.SaveCSV(tradeDaysData, CSVName,"new");
 
         }
 
@@ -258,7 +261,7 @@ namespace EventSelection
             int nextIndex = tradeDaysOfDataBase.FindIndex(delegate (int i) { return i == today; }) + 1;
             if (nextIndex >= tradeDaysOfDataBase.Count)
             {
-                return 0;
+                return tradeDaysOfDataBase.Count-1;
             }
             else
             {
@@ -306,6 +309,41 @@ namespace EventSelection
             }
         }
 
+        /// <summary>
+        /// 静态函数。给出前n个交易日。
+        /// </summary>
+        /// <param name="today">当前交易日</param>
+        /// <returns>返回前一交易日</returns>
+        public static int GetNTradeDaysBefore(int today,int n)
+        {
+            int preIndex = tradeDaysOfDataBase.FindIndex(delegate (int i) { return i == today; }) - n;
+            if (preIndex < 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return tradeDaysOfDataBase[preIndex];
+            }
+        }
+
+        /// <summary>
+        /// 静态函数。给出下n个交易日。
+        /// </summary>
+        /// <param name="today">当前交易日</param>
+        /// <returns>下一交易日</returns>
+        public static int GetNTradeDaysLater(int today,int n)
+        {
+            int nextIndex = tradeDaysOfDataBase.FindIndex(delegate (int i) { return i == today; }) + n;
+            if (nextIndex >= tradeDaysOfDataBase.Count)
+            {
+                return tradeDaysOfDataBase.Count-1;
+            }
+            else
+            {
+                return tradeDaysOfDataBase[nextIndex];
+            }
+        }
 
         /// <summary>
         /// 静态函数。获取交易日间隔天数。

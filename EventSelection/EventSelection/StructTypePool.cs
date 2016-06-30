@@ -6,6 +6,21 @@ using System.Threading.Tasks;
 
 namespace EventSelection
 {
+    struct stockPosition
+    {
+        public string code;
+        public int date;
+        public double position;
+        public double cash;
+        public stockPosition(string code,int date,double position,double cash)
+        {
+            this.code = code;
+            this.date = date;
+            this.position = position;
+            this.cash = cash;
+        }
+    }
+    
     struct stockModifyList
     {
         public int date;

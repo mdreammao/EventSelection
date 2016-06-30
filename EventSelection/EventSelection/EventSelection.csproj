@@ -49,6 +49,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="CsvApplication.cs" />
     <Compile Include="DataApplication.cs" />
+    <Compile Include="EventOfIndex50.cs" />
     <Compile Include="GetStockBonus.cs" />
     <Compile Include="GetStockChange.cs" />
     <Compile Include="GetStockData.cs" />

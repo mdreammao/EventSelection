@@ -16,14 +16,21 @@ namespace EventSelection
         /// </summary>
         /// <param name="dt">提供保存数据的DataTable</param>
         /// <param name="fileName">CSV的文件路径</param>
-        public static void SaveCSV(DataTable dt, string fullPath)
+        public static void SaveCSV(DataTable dt, string fullPath,string append="")
         {
             FileInfo fi = new FileInfo(fullPath);
             if (!fi.Directory.Exists)
             {
                 fi.Directory.Create();
             }
-            FileStream fs = new FileStream(fullPath, System.IO.FileMode.Append, System.IO.FileAccess.Write);
+
+            FileStream fs;
+            fs = new FileStream(fullPath, System.IO.FileMode.Append, System.IO.FileAccess.Write);
+            if (append=="new")
+            {
+                fs.Close();
+                fs = new FileStream(fullPath, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+            }
             //StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.Default);
             StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
             string data = "";

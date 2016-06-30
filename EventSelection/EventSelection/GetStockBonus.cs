@@ -12,8 +12,8 @@ namespace EventSelection
         /// <summary>
         /// 万德接口类实例。
         /// </summary>
-        static private WindAPI w = new WindAPI();
-        public SortedDictionary<int, stockChangeFormat> stockChangeList = new SortedDictionary<int, stockChangeFormat>();
+        static private WindAPI w ;
+        public List<stockChangeFormat> stockChangeList = new List<stockChangeFormat>();
         private string code, stockId, stockMarket;
         private int startDate, endDate;
         private TradeDays myTradeDays;
@@ -29,17 +29,24 @@ namespace EventSelection
             this.startDate = startDate;
             this.endDate = endDate;
             myTradeDays = new TradeDays(startDate, endDate);
-            w.start();
+            InitializeWind();
             GetBonusFromWind();
         }
-
+        private void InitializeWind()
+        {
+            if (w==null)
+            {
+                w = new WindAPI();
+                w.start();
+            }
+        }
         private void GetBonusFromWind()
         {
             string startDateStr = DateTime.ParseExact(startDate.ToString(), "yyyyMMdd", null).ToString("yyyy-MM-dd");
             string endDateStr = DateTime.ParseExact(endDate.ToString(), "yyyyMMdd", null).ToString("yyyy-MM-dd");
             WindData wd = w.wset("corporationaction", "startdate="+startDateStr+";enddate="+endDateStr+";windcode="+code);
             object[] stockList = wd.data as object[];
-            int num = stockList.Length / 11;
+            int num = stockList==null?0:stockList.Length / 11;
             for (int i = 0; i < num; i++)
             {
                 stockChangeFormat change = new stockChangeFormat();
@@ -48,7 +55,7 @@ namespace EventSelection
                 change.date = Convert.ToInt32(date[0]) * 10000 + Convert.ToInt32(date[1]) * 100 + Convert.ToInt32(date[2]);
                 change.bonus = Convert.ToDouble(stockList[i * 11 + 3]);
                 change.divisor = 1.0+Convert.ToDouble(stockList[i * 11 + 4]);
-                stockChangeList.Add(change.date, change);
+                stockChangeList.Add(change);
             }
         }
     }

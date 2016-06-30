@@ -57,7 +57,7 @@ namespace EventSelection
                 {
                     if (now>=today && now<=endOfMonth && now<=myTradeDays.myTradeDays[myTradeDays.myTradeDays.Count()-1])
                     {
-                        DataRow[] myRows = dt.Select("tdate=" + today.ToString() + " and ttime>=93000000 and ttime<=150000000");
+                        DataRow[] myRows = dt.Select("tdate=" + now.ToString() + " and ttime>=93000000 and ttime<=150000000");
                         int indexMax = Time2Index(150000000);
                         stockDataFormat[] myStockArray = new stockDataFormat[indexMax+1];
                         foreach (DataRow r in myRows)
@@ -117,7 +117,7 @@ namespace EventSelection
                 int hour = time / 10000000;
                 int minute = time % 10000000 / 100000;
                 int second = time % 100000 / 1000;
-                index = (hour - 13) * 3600 + minute * 60 + second+1;
+                index = (hour - 13) * 3600 + minute * 60 + second+1+7200;
             }
             return index;
         }    
